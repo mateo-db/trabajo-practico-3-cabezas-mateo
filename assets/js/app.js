@@ -82,3 +82,5 @@ const filtrarPj = () => {
 
 }
 
+//se escucha al evento "click" que sucede en el botón de busqueda, cuando suceda se llama a la función filtrarPj
+btnSearch.addEventListener("click", filtrarPj)
