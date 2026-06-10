@@ -6,6 +6,8 @@ let personajes = [];
 const rowCards = document.querySelector("#rowPjSimpson")
 const myModal = new bootstrap.Modal("#modalPjSimpson")
 const titleModal = document.querySelector("#h1ModPjSimpson")
+const inputUser = document.querySelector("#inputBuscar")
+const btnSearch = document.querySelector("#btnBuscar")
 
 
 
@@ -33,6 +35,7 @@ const personajesCargados = async () => {
 // personajesCargados()
 //se declara variable que utilizara una funcion con parametro generico para recorrer el arreglo que le pasemos y renderizar las cards
 const cargarPersonajes = (array) => {
+    //limpia los resultados anteriores antes de mostrar nuevos (sirve en el momento de ejecutar el buscador)
     rowCards.innerHTML = ""
     array.forEach((personaje) => {
         rowCards.innerHTML +=`
@@ -52,3 +55,30 @@ const cargarPersonajes = (array) => {
 }
 
 personajesCargados()
+
+//se declara variable que guarda función responsable de capturar
+const filtrarPj = () => {
+    //se guarda en nombreBuscado el valor del input del usuario (lo que escribió)
+    //se utiliza metodo toLowerCase para evitar problemas con mayusculas
+    const nombreBuscado = inputUser.value.toLowerCase()
+    //estructura if de validacion, si el input del usuario es texto vacío se arroja una alerta, luego un return para detener la función y volver a su inicio
+    if (nombreBuscado === "") {
+        alert("Error: campo vacío")
+        return
+    }
+    
+    //se filtra personajes por nombre buscado usando metodo filter y el resultado (un arreglo nuevo) se guarda en pjFiltrado
+    const pjFiltrado = personajes.filter(personaje => personaje.name.toLowerCase().includes(nombreBuscado.toLowerCase()))
+    
+    //estructura if de validacion, si el arreglo en pjFiltrado está vacío (es decir, no se encontraron coincidencias entre los personajes y lo buscado), se muestra un elemento de clase alert de bootstrap con el mensaje de error
+    //sino, se prosigue con la carga del personaje filtrado correctamente
+    if (pjFiltrado.length === 0) {
+        rowCards.innerHTML =`
+        <div class="alert alert-warning" role="alert">No se encontraron coincidencias</div>
+        `
+    } else {
+        cargarPersonajes (pjFiltrado)
+    }
+
+}
+
