@@ -1,7 +1,10 @@
 const urlApiGeneral = "https://thesimpsonsapi.com/api/characters"
 const urlApiInd = "https://thesimpsonsapi.com/api/characters/"
 
-let personajes = [];
+let personajes = []
+//bandera logica que nos indicara si el usuario filtró por nombre o no haciendo una busqueda
+//comienza al principio de la app, en limpio ya que no se ejecutó nada por ahora
+let estaFiltrado = false
 
 const rowCards = document.querySelector("#rowPjSimpson")
 const myModal = new bootstrap.Modal("#modalPjSimpson")
@@ -62,15 +65,18 @@ const filtrarPj = () => {
     //se utiliza metodo toLowerCase para evitar problemas con mayusculas
     const nombreBuscado = inputUser.value.toLowerCase()
     //estructura if de validacion, si el input del usuario es texto vacío se arroja una alerta, luego un return para detener la función y volver a su inicio
+    //esta estructura verifica que el campo de texto no esté vacío la primera vez que se busca un nombre de personaje a filtrar del arreglo
     if (nombreBuscado === "") {
-        alert("Error: campo vacío")
+        //si el campo si está vacío, se delega la responsabilidad de decidir que hacer a la función limpiarResultados
+        limpiarResultados()
+        //si la función de limpiar tomó la decisión de limpiar los resultados, se detiene la función ahí con return
         return
     }
     
     //se filtra personajes por nombre buscado usando metodo filter y el resultado (un arreglo nuevo) se guarda en pjFiltrado
     const pjFiltrado = personajes.filter(personaje => personaje.name.toLowerCase().includes(nombreBuscado.toLowerCase()))
     
-    //estructura if de validacion, si el arreglo en pjFiltrado está vacío (es decir, no se encontraron coincidencias entre los personajes y lo buscado), se muestra un elemento de clase alert de bootstrap con el mensaje de error
+    //estructura if de validacion, si el arreglo en pjFiltrado está vacío (es decir, no se encontraron coincidencias entre los nombres de los personajes y el nombre buscado), se muestra un elemento de clase alert de bootstrap con el mensaje de error
     //sino, se prosigue con la carga del personaje filtrado correctamente
     if (pjFiltrado.length === 0) {
         rowCards.innerHTML =`
@@ -78,9 +84,25 @@ const filtrarPj = () => {
         `
     } else {
         cargarPersonajes (pjFiltrado)
+        //en el caso de que el campo de texto no haya sido vacío la primera vez y se haya encontrado una coincidencia entre personaje del arreglo y el nombre buscado correctamente, la bandera logica que nos indica si los resultados del arreglo están filtrados o no pasa de false a "true"
+        estaFiltrado = true
     }
 
 }
 
 //se escucha al evento "click" que sucede en el botón de busqueda, cuando suceda se llama a la función filtrarPj
 btnSearch.addEventListener("click", filtrarPj)
+
+//funcion responsable de limpiar resultados en pantalla y volver a mostrar los 20 personajes
+const limpiarResultados = () => {
+    if (estaFiltrado === true) {
+        //estructura if que evalua, si estaFiltrado es true (osea, si ya se filtró por nombre), se resetea nuestro innerHTML para que esté vacío y luego se vuelve a cargar el arreglo original con 20 personajes
+        rowCards.innerHTML = ""
+        cargarPersonajes(personajes)
+        //apagamos la bandera logica estaFiltrado poniendola como false, para que así vuelva a su estado inicial (el usuario no filtró buscando por nombre)
+        estaFiltrado = false
+    } else {
+        //en caso de que estaFiltrado no sea true, se tira un error con mensaje "campo vacío"
+        alert("Error: campo vacío")
+    }
+}
