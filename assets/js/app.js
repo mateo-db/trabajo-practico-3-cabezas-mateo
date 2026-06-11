@@ -106,3 +106,22 @@ const limpiarResultados = () => {
         alert("Error: campo vacío")
     }
 }
+
+//se declara variable que guardará funcion asincronica responsable de hacer fetch al API individual de los personajes, le pasaremos como parametro generico "id" lo cual lo hace reutilizable, es decir, cual fuera el valor o argumento que se tome, será el parametro "id"
+const traerPjIndividual = async (id) => {
+    // se envuelve en try catch, try para "intentar" el fetch y catch para atrapar errores si los hubiere
+    try {
+        //el fetch se hace entre backticks así ya que concatenamos la url con el id relacionado del personaje en cuestion, para que traiga la informacion detallada solo de ESE personaje en particular
+        //el id lo estamos sacando del data-id=${personaje.id} que está en el botón "ver detalle" dentro del innerHTML
+        const dataIndCruda = await fetch(`${urlApiInd}${id}`) //
+        //esa respuesta de datos crudos lo pasamos a JSON así javascript puede trabajar con él
+        const dataIndJson = await dataIndCruda.json()
+        //luego hacemos return a lo que devuelva dataIndJson
+        return dataIndJson
+    } catch (error) {
+        console.error("Error: falló fetch a la API")
+    }
+}
+
+//nota: el nombre del parametro generico realmente no hace nada, en el sentido de que no está accediendo a un "id" ni llamandolo, cualquier nombre que le demos podrá guardar los mismos datos, solo que es mucho mas conveniente darle un nombre generico pero descriptivo de lo que pasaremos como argumento entre esos parametros
+
