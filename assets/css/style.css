@@ -1,0 +1,20 @@
+body {
+    background-color: rgba(229, 235, 157, 0.664);
+}
+
+.row {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.input-group {
+    margin-top: 20px;
+}
+
+#btnBuscar {
+    background-color: rgba(102, 134, 238, 0.705);
+}
+
+#btnBuscar:hover {
+    color: rgb(255, 255, 255);
+}
