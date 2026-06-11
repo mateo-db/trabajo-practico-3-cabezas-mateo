@@ -134,8 +134,31 @@ rowCards.addEventListener("click", async (e) => {
         //se invoca a la funcion traerPjIndividual y se le pasa como argumento la variable que guarda el id del objetivo del event object
         const personajeSeleccionado = await traerPjIndividual(idPersonaje)
 
-        //console.log("Detalles del PJ traido:", personajeSeleccionado)
-
+        // console.log("Detalles del PJ traido:", personajeSeleccionado)
+        //se llama a la funcion responsable de crear y mostrar el modal dentro del evento para pasarle como argumento el personaje seleccionado
+        mostrarModalPjInd(personajeSeleccionado)
     }
 })
 
+//variable que guardara la construccion del modal por personaje
+const mostrarModalPjInd = (personaje) => {
+
+    titleModal.textContent = personaje.name
+    const bodyModal = document.querySelector("#bodyPjModal")
+    
+    bodyModal.innerHTML = `
+        <div class="text-center">
+            <img src="https://cdn.thesimpsonsapi.com/200${personaje.portrait_path}">
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Edad: ${personaje.age}</li>
+            <li class="list-group-item">Fecha de Nacimiento: ${personaje.birthdate}</li>
+            <li class="list-group-item">Genero: ${personaje.gender}</li>
+            <li class="list-group-item">Ocupación: ${personaje.occupation}</li>
+            <li class="list-group-item">Estado: ${personaje.status}</li>
+            <li class="list-group-item">Frases: ${personaje.phrases}</li>
+        </ul>
+
+    
+    `
+}
