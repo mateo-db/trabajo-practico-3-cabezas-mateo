@@ -125,3 +125,17 @@ const traerPjIndividual = async (id) => {
 
 //nota: el nombre del parametro generico realmente no hace nada, en el sentido de que no está accediendo a un "id" ni llamandolo, cualquier nombre que le demos podrá guardar los mismos datos, solo que es mucho mas conveniente darle un nombre generico pero descriptivo de lo que pasaremos como argumento entre esos parametros
 
+//se escucha evento en contenedor principal
+rowCards.addEventListener("click", async (e) => {
+    //se evalua si el objetivo del event object contiene una clase "btn-success"
+    if (e.target.classList.contains('btn-success')) {
+        //en caso positivo, se guarda el id del objetivo de ese event object en una variable
+        const idPersonaje = e.target.dataset.id
+        //se invoca a la funcion traerPjIndividual y se le pasa como argumento la variable que guarda el id del objetivo del event object
+        const personajeSeleccionado = await traerPjIndividual(idPersonaje)
+
+        //console.log("Detalles del PJ traido:", personajeSeleccionado)
+
+    }
+})
+
